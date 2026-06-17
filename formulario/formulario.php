@@ -39,6 +39,8 @@
                     <option value="secretaria de defesa civil">Secretaria de Defesa Civil</option>
                     <option value="Procuradoria">Procuradoria Jurídica</option>
                     <option value="controladoria">Controladoria Geral</option>
+                    <option value="gabinete">Gabinete do Prefeito</option>
+                    <option value="Recurso Humanos">Recursos Humanos</option>
                     <option value="outro">Outro</option>
                 </select>
 
@@ -125,7 +127,7 @@
                 <input type="number" id="quantidade_usuarios" name="quantidade_usuarios" required>
 
                 <label for="perfis_usuarios">Perfis dos usuários (ex.: administrativos, técnicos, gestores, cidadãos, etc.):</label>
-                <textarea id="perfis_usuarios" name="perfis_usuarios" rows="3" required></textarea>
+                <textarea id="perfis_usuarios" name="perfis_usuarios" maxlength="360" rows="3" required></textarea>
             </section>
             <!-- Prioridade da Demanda -->
             <section>
