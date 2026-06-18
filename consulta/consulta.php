@@ -11,20 +11,9 @@ if ($conection->connect_error) {
     die("Erro na Conexão com o Banco de Dados!! " . $conection->connect_error);
 }
 // sql para leitura da tabela de consulta pesquisa chamada formulario
-$sql = "SELECT * FROM formulario";
+$sql = "SELECT formulario.id, formulario.data, formulario.secretaria, formulario.departamento, formulario.cargo, formulario.responsavel,
+formulario.fone_ramal, formulario.email FROM formulario";
 $result = $conection->query($sql);
-// Verificando se a consulta retornou resultados
-if ($result->num_rows > 0) {
-    // Armazenando os resultados em um array
-    $consultas = [];
-    while ($row = $result->fetch_assoc()) {
-        $consultas[] = $row;
-    }
-} else {
-    echo "Nenhuma consulta encontrada.";
-}
-
-
 
 ?>
 
@@ -58,39 +47,67 @@ if ($result->num_rows > 0) {
 </head>
 
 <body>
-    <div class="container mt-5">
+    <div class="container-fluid">
         <h1 class="mb-4">Consultas</h1>
         <table id="consultasTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Data</th>
                     <th>Secretaria</th>
-                    <th>Deparatamento</th>
+                    <th>Departamento</th>
                     <th>Telefone</th>
                     <th>Responsável</th>
-                    <th>Cargo<th>
+                    <th>Cargo</th>
                     <th>e-mail</th>
+                    <th>Opções</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($consultas as $consulta) : ?>
+                <?php while ($c_linha = $result->fetch_assoc()) {
+                    $c_data = date('d/m/Y', strtotime($c_linha['data'])); 
+                    echo "
                     <tr>
-                        <td><?php echo $consulta['data']; ?></td>
-                        <td><?php echo $consulta['secretaria']; ?></td>
-                        <td><?php echo $consulta['departamento']; ?></td>
-                        <td><?php echo $consulta['fone_ramal']; ?></td>
-                        <td><?php echo $consulta['responsavel']; ?></td>
-                        <td><?php echo $consulta['cargo']; ?></td>
-                        <td><?php echo $consulta['email']; ?></td>
-                    </tr>
-                <?php endforeach; ?>
+                        <td>$c_linha[id]</td>
+                        <td>$c_data</td>
+                        <td>$c_linha[secretaria]</td>
+                        <td>$c_linha[departamento]</td>
+                        <td>$c_linha[fone_ramal]</td>
+                        <td>$c_linha[responsavel]</td>
+                        <td>$c_linha[cargo]</td>
+                        <td>$c_linha[email]</td>
+                        <td>
+                            <a class='btn btn-primary btn-sm' title='Visualizar resposta' href='/pesquisa/consulta/visualizar.php?id=$c_linha[id]'><span class='glyphicon glyphicon-zoom-in'></span></a>
+                            
+                        </td>
+
+                    </tr>";
+               }
+                     ?>
             </tbody>
         </table>
     </div>
 
     <script>
         $(document).ready(function() {
-            $('#consultasTable').DataTable();
+
+            // traduzir o DataTable para português
+            $('#consultasTable').DataTable({
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "Nenhum registro disponível",
+                    "infoFiltered": "(filtrado de _MAX_ registros no total)",
+                    "search": "Pesquisar:",
+                    "paginate": {
+                        "first": "Primeira",
+                        "last": "Última",
+                        "next": "Próxima",
+                        "previous": "Anterior"
+                    }
+                }
+            });
         });
     </script>
 </body>
